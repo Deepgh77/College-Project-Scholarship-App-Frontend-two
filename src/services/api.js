@@ -1,5 +1,4 @@
-const RENDER_BACKEND_URL = 'https://college-project-scholarship-app-1.onrender.com';
-const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? '/api' : `${RENDER_BACKEND_URL}/api`);
+const API_BASE = '/api';
 
 /**
  * Custom error class for API errors
@@ -44,7 +43,10 @@ async function request(endpoint, options = {}) {
 
 export const api = {
   // Health
-  getHealth: () => request('/health'),
+  getHealth: () =>
+    fetch('https://college-project-scholarship-app-1.onrender.com/api/health', {
+      credentials: 'include',
+    }).then((res) => res.json()),
 
   // Auth
   register: (payload) =>
@@ -114,23 +116,23 @@ export const api = {
       method: 'DELETE',
     }),
 
-  getDocumentPreviewUrl: (id) => `${API_BASE}/documents/${id}/preview`,
+  getDocumentPreviewUrl: (id) => `/api/documents/${id}/preview`,
 
-  getDocumentDownloadUrl: (id) => `${API_BASE}/documents/${id}/download`,
+  getDocumentDownloadUrl: (id) => `/api/documents/${id}/download`,
 
-  getVersionDownloadUrl: (id, versionId) => `${API_BASE}/documents/${id}/versions/${versionId}/download`,
+  getVersionDownloadUrl: (id, versionId) => `/api/documents/${id}/versions/${versionId}/download`,
 
-  getVersionPreviewUrl: (id, versionId) => `${API_BASE}/documents/${id}/versions/${versionId}/preview`,
+  getVersionPreviewUrl: (id, versionId) => `/api/documents/${id}/versions/${versionId}/preview`,
 
   getApplicationPdfUrl: (id, isDownload = false, cycle = null) => {
     const params = new URLSearchParams();
     if (isDownload) params.set('download', 'true');
     if (cycle) params.set('cycle', String(cycle));
     const qs = params.toString();
-    return `${API_BASE}/applications/${id}/pdf${qs ? `?${qs}` : ''}`;
+    return `/api/applications/${id}/pdf${qs ? `?${qs}` : ''}`;
   },
 
-  getApplicationPdfPreviewUrl: (id) => `${API_BASE}/applications/${id}/preview/pdf`,
+  getApplicationPdfPreviewUrl: (id) => `/api/applications/${id}/preview/pdf`,
 
   // Application Creation & Submission (Phase 5)
   startApplication: (scholarshipId) =>
@@ -227,10 +229,10 @@ export const api = {
     }),
 
   getCollegeDocPreviewUrl: (applicationId, versionId) =>
-    `${API_BASE}/college/applications/${applicationId}/documents/${versionId}/preview`,
+    `/api/college/applications/${applicationId}/documents/${versionId}/preview`,
 
   getCollegeDocDownloadUrl: (applicationId, versionId) =>
-    `${API_BASE}/college/applications/${applicationId}/documents/${versionId}/download`,
+    `/api/college/applications/${applicationId}/documents/${versionId}/download`,
 
   // Authority Panel (Phase 8)
   getAuthorityDashboard: () => request('/authority/dashboard'),
@@ -266,10 +268,10 @@ export const api = {
     }),
 
   getAuthorityDocPreviewUrl: (applicationId, versionId) =>
-    `${API_BASE}/authority/applications/${applicationId}/documents/${versionId}/preview`,
+    `/api/authority/applications/${applicationId}/documents/${versionId}/preview`,
 
   getAuthorityDocDownloadUrl: (applicationId, versionId) =>
-    `${API_BASE}/authority/applications/${applicationId}/documents/${versionId}/download`,
+    `/api/authority/applications/${applicationId}/documents/${versionId}/download`,
 
   // Administrative Payment Simulation (Phase 9)
   getAdminApprovedApplications: (params = {}) => {
