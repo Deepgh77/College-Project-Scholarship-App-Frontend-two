@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://college-project-scholarship-app-1.onrender.com/api/:path*"
+    },
+    {
+      "source": "/((?!api/|api$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
